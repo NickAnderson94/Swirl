@@ -9,8 +9,6 @@ library(fields)
 library(dplyr)
 library(ggplot2)
 
-Unit 3 - Structure Discovery #Name of old directory
-#complete 2, 4, 6
 
 # Instructions ------------------------------------------------------------
 
@@ -138,7 +136,38 @@ plot(x, y, col = kmeans(dataFrame, 6)$cluster, pch = 19, cex = 2)
 
 
 # 4 Exploratory Graphics ----------------------------------------------------------------------------------
+head(pollution)
+dim(pollution)
+summary(pollution$pm25)
+quantile(ppm)
+boxplot(ppm, col = )
+boxplot(ppm, col = "blue")
+abline(h = 12)
+hist(ppm, col = "green")
+rug(ppm)
+low
+high
+hist(ppm, col = "green", breaks = 100)
+rug(ppm)
+hist(ppm, col = "green")
+abline(v = 12, lwd = 2)
+abline(v = median(ppm), col = "magenta", lwd = 4)
+reg <- table(pollution$region)
+reg
+barplot(reg, col = "wheat", main = "Number of Countries in Each Region")
+barplot(reg, col = "wheat", main = "Number of Counties in Each Region")
 
+#see the pollution data as a function of region
+boxplot(pm25 ~ region, data = pollution, col = "red")
+par(mfrow=c(2,1),mar=c(4,4,2,1))
+subset(pollution, region == "east")
+east <- subset(pollution, region == "east")
+hist(east$pm25, col = "green")
+hist(subset(pollution, region == "west")$pm25, col = "green")
+
+#color scatter plot by groupping variable
+plot(pollution$latitude, ppm, col = pollution$region)
+abline(h =12, lwd =2, lty = 2)
 
 
 # 5 Graphics Devices in R ---------------------------------------------------------------------------------
@@ -188,6 +217,34 @@ dev.off()
 #x-coordinates (x1-x2) and the two y-coordinates (y1-y2). You probably recognize this as an application of the
 #Pythagorean theorem which yields the length of the hypotenuse of a right triangle.
 
+#More formally, Manhattan distance is the sum of the absolute values of the distances between each coordinate,
+#so the distance between the points (x1,y1) and (x2,y2) is |x1-x2|+|y1-y2|. As with Euclidean distance, this too
+#generalizes to more than 2 dimensions.
+
+dist(dataFrame)
+hc <- hclust(distxy)
+plot(hc) #create cluster dendrogram
+plot(as.dendrogram(hc))
+abline(h = 1.5, col = "blue")
+abline(h = .4, col = "red")
+
+#We see that this blue line intersects 3 vertical lines and this tells us that using the distance 1.5
+#(unspecified units) gives us 3 clusters (1 through 4), (9 through 12), and (5 through 8). We call this a "cut"
+#of our dendrogram. Now cut the dendrogam by drawing a red horizontal line at .4.
+
+#Heat maps
+#| (http://en.wikipedia.org/wiki/Heat_map) tells us a heat map is "a graphical representation of data where the
+#| individual values contained in a matrix are represented as colors. ... Heat maps originated in 2D displays of
+#| the values in a data matrix. Larger values were represented by small dark gray or black squares (pixels) and
+#| smaller values by lighter squares."
+
+# Tutorial on creating heat maps
+http://sebastianraschka.com/Articles/heatmaps_in_r.html#clustering
+heatmap(dataMatrix, col = cm.colors(25))
+heatmap(mt)
+
+
+
 
 # 7 K-means clustering ----------------------------------------------------------------------------------
 
@@ -214,65 +271,4 @@ dev.off()
 
 #the pollution and mortality graph is deception - simpson's paradox, the trend appears broken becuase
 #group means are not accounted for
-
-# From Introduction to R --------------------------------------------------------------------------------
-
-#subsetting
-x <- c(NA,1:20)
-x[1:10]
-x[is.na(x)]
-y <- x[!is.na(x)]
-y
-y[y>4]
-y[y>0]
-x[x.0]
-x[x>0]
-x[!is.na(x) & x > 0]
-x[c(3, 5, 7)]
-x[0]
-x[3000]
-x[c(-2, -10)]
-x[-c(2, 10)]
-
-#plots
-swirl()
-swirl(15)
-data(cars)
-head(cars)
-plot(cars)
-plot(x = cars$speed, cars$dist)
-plot(x = cars$speed, y = cars$dist)
-plot(x = cars$speed, y = cars$dist, xlab = "Speed")
-plot(x = cars$speed, y = cars$dist, xlab = "Speed", ylab = "Stopping Distance")
-plot(x = cars$speed, y = cars$dist, main = "My Plot")
-plot(cars, sub = "My Plot Subtitle")
-?par
-plot(cars, col = 2)
-plot(cars, xlim = c(10, 15))
-plot(cars, pch = 2)
-data("mtcars")
-data(mtcars)
-boxplot(formula = mpg ~ cyl, data = mtcars)
-hist(mtcars$mpg)
-
-#Simulationsample(1:6, 4, replace = TRUE)
-sample(1:20, size = 10)
-LETTERS
-sample(LETTERS)
-sample(x = c(0, 1), size = 100, replace = TRUE, prob = c(0.3, 0.7))
-flips <- sample(x = c(0, 1), size = 100, replace = TRUE, prob = c(0.3, 0.7))
-sum(flips)
-rbinom(1, size = 100, prob = 0.7)
-rnorm(10)
-rnorm(10, mean = 100, sd = 25)
-rpois(n = 5, lambda = 10)
-my_pois <- replicate(100, rpois(5, 10))
-my_pois
-cm <- colMeans(my_pois)
-hist(cm)
-
-
-
-
-
 
